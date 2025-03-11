@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "## Project Structure ``` . ├── .mastra/ ├── src/ │   └── mastra/ │       ├── agents/ │       ├── workflows/ │       ├── tools/ │       └── index.ts ├── .env.development ├── package.json ├── tsconfig.json └── .gitignore ```",
   "type": "module",
   "dependencies": {
     "@ai-sdk/groq": "^1.1.12",
@@ -20,7 +20,6 @@
     "@mastra/evals": "^0.1.7",
     "@mastra/memory": "^0.1.7",
     "@mastra/yc-hn-tools": "^0.0.7",
-    "mastra": "^0.2.8",
     "zod": "^3.24.2"
   },
   "devDependencies": {
