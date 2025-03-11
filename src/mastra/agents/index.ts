@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { groq } from '@ai-sdk/groq';
 import { Agent } from '@mastra/core/agent';
-import { weatherTool } from '../tools';
+import { weatherTool, whoisTool } from '../tools';
 import { searchCompanies, getCompanyBySlug, listCompaniesByBatch, searchHackerNews, getTopStories } from '@mastra/yc-hn-tools';
 import { ToneConsistencyMetric } from '@mastra/evals/nlp';
 import { Memory } from '@mastra/memory';
@@ -20,7 +20,8 @@ export const weatherAgent = new Agent({
       Use the weatherTool to fetch current weather data.
 `,
   model: groq('llama-3.3-70b-versatile'),
-  tools: { 
+  tools: {
+    whoisTool,
     weatherTool,
     searchCompanies,
     getCompanyBySlug,
