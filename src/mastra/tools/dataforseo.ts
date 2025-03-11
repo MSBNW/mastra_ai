@@ -24,11 +24,18 @@ const getWhoisInfo = async (domain: string) => {
         'https://api.dataforseo.com/v3/domain_analytics/whois/overview/live',
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            identity: 'userTest',
-            room: 'test-room',
-          }),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic bWlrZUB0ZWFtYnVpbGQuaXQ6TUhRTE1VSUxFYW1PUzRIdA'
+          },
+          body: JSON.stringify([
+            {
+              limit: 1,
+              filters: [
+                ['domain', '=', domain]
+              ],
+            }
+          ]),
         }
     );
 
@@ -40,7 +47,7 @@ const getWhoisInfo = async (domain: string) => {
 
     return {
       domainName: domain,
-      etv: data.etv || 'Unknown',
+      etv: data?.tasks?.[0]?.result?.[0]?.items?.[0]?.metrics?.organic?.etv || 'Unknown',
     };
   } catch (error) {
     console.error('Error fetching dataforseo data:', error);
