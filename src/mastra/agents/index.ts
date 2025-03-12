@@ -5,6 +5,9 @@ import { weatherTool, whoisTool } from '../tools';
 import { searchCompanies, getCompanyBySlug, listCompaniesByBatch, searchHackerNews, getTopStories } from '@mastra/yc-hn-tools';
 import { ToneConsistencyMetric } from '@mastra/evals/nlp';
 import { Memory } from '@mastra/memory';
+import { mainVoiceAgent } from './mainVoiceAgent';
+
+export { mainVoiceAgent };
 
 export const weatherAgent = new Agent({
   name: 'Weather Agent',
