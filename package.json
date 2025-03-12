@@ -4,21 +4,25 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "mastra dev"
+    "dev": "mastra dev",
+    "build": "mastra build",
+    "start": "mastra start",
+    "deploy": "mastra deploy vercel"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "## Project Structure ``` . ├── .mastra/ ├── src/ │   └── mastra/ │       ├── agents/ │       ├── workflows/ │       ├── tools/ │       └── index.ts ├── .env.development ├── package.json ├── tsconfig.json └── .gitignore ```",
   "type": "module",
   "dependencies": {
     "@ai-sdk/groq": "^1.1.12",
     "@ai-sdk/openai": "^1.2.1",
-    "@mastra/core": "^0.4.4",
+    "@mastra/core": "^0.5.0",
+    "@mastra/deployer-vercel": "^0.1.8",
     "@mastra/evals": "^0.1.7",
-    "@mastra/memory": "^0.1.7",
+    "@mastra/memory": "^0.2.0",
     "@mastra/yc-hn-tools": "^0.0.7",
-    "mastra": "^0.2.8",
+    "mastra": "^0.3.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
