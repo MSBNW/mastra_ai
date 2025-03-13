@@ -31,7 +31,7 @@ const reviewsTool = createTool({
         language: z.string().optional().default('english').describe('Language for reviews'),
         domain: z.string().optional().describe('Domain name (required for Trustpilot)'),
         place_id: z.string().optional().describe('Google Place ID (can be used instead of coordinates/keyword for Google)'),
-        limit: z.number().optional().default(10).describe('Maximum number of reviews to retrieve'),
+        limit: z.number().optional().default(2).describe('Maximum number of reviews to retrieve'),
     }),
     outputSchema: z.object({
         status: z.string().optional(),
@@ -56,7 +56,11 @@ export default reviewsTool;
 
 // Helper function to make DataForSEO API requests
 const dataForSeoRequest = async (body: any, endpoint: string, method = 'post') => {
-    console.log('!! INIT DATAFORSEO REQUEST');
+    console.log('!! INIT DATAFORSEO REQUEST body:', JSON.stringify(body));
+    console.log('!! INIT DATAFORSEO REQUEST endpoint:', endpoint);
+    console.log('!! INIT DATAFORSEO REQUEST method:', method );
+    console.log('--------------------------------' );
+
     const url = `https://api.dataforseo.com/v3/${endpoint}`;
     const headers = {
         'Authorization': `Basic ${process.env.DATAFORSEO_API_KEY}`,
@@ -141,11 +145,13 @@ const hashString = (str: string): string => {
 
 // Poll for task results with retries
 const pollTaskResults = async (reviewType: string, taskId: string, maxAttempts = 10): Promise<any> => {
+    console.log('!! POLL TASK RESULTS taskId:', taskId);
+
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         try {
             const reviewEndpoints: Record<'google' | 'trustpilot', string> = REVIEW_ENDPOINTS(`task_get/${taskId}`);
             const result = await dataForSeoRequest([], reviewEndpoints[reviewType as 'google' | 'trustpilot'], 'get');
-
+            console.log('!! POLL TASK RESULTS result:', result);
             if (result?.status_code === 20000) {
                 return result;
             }
@@ -167,7 +173,7 @@ const getReviews = async (params: any) => {
         coordinates,
         keyword,
         language = 'english',
-        limit = 10,
+        limit = 3,
         place_id = '',
         domain = ''
     } = params;
@@ -175,10 +181,15 @@ const getReviews = async (params: any) => {
     if (!reviewType) {
         throw new Error('reviewType is required');
     }
-    if (reviewType === 'google' && !place_id && (!coordinates || !keyword)) {
-        throw new Error('For Google reviews, either place_id or both coordinates and keyword are required');
+    if (reviewType === 'google') {
+        if (!coordinates) {
+            throw new Error('Coordinates are required for Google reviews');
+        }
+        if (!keyword && !place_id) {
+            throw new Error('Either keyword or place_id is required for Google reviews');
+        }
     }
-    if (reviewType === 'trustpilot' && !domain) {
+    else if (reviewType === 'trustpilot' && !domain) {
         throw new Error('domain is required for Trustpilot reviews');
     }
 
@@ -191,10 +202,10 @@ const getReviews = async (params: any) => {
 
     // Add service-specific parameters
     if (reviewType === 'google') {
+        body.location_coordinate = coordinates;
         if (place_id) {
             body.place_id = place_id;
         } else {
-            body.location_coordinate =coordinates;
             body.keyword = keyword;
         }
     } else if (reviewType === 'trustpilot') {
@@ -203,6 +214,8 @@ const getReviews = async (params: any) => {
 
     const reviewEndpoints: Record<'google' | 'trustpilot', string> = REVIEW_ENDPOINTS();
     const taskResult = await dataForSeoRequest([body], reviewEndpoints[reviewType as 'google' | 'trustpilot']);
+
+    console.log('!! getReviews taskResult:', taskResult);
 
     if (!taskResult?.id) {
         return {
