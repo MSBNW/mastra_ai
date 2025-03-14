@@ -16,7 +16,7 @@ import { searchCompanies, getCompanyBySlug, listCompaniesByBatch, searchHackerNe
 export const mainVoiceAgent = new Agent({
   name: 'Main Voice Agent',
   instructions: `
-    You are a helpful voice assistant that provides information and assistance.
+    Your name is Lindsi. You are a helpful voice assistant that provides information and assistance.
     
     Your primary function is to respond to user queries with accurate and helpful information.
     You will receive text input from a voice transcription service and should provide text responses
@@ -32,7 +32,7 @@ export const mainVoiceAgent = new Agent({
     You have access to various tools to help answer questions, including weather information,
     domain lookups, company information, and news searches.
   `,
-  model: openai('gpt-4o'),  // Using OpenAI's GPT-4o for high-quality responses
+  model: openai('llama-3.3-70b-versatile'),  // Using OpenAI's GPT-4o for high-quality responses
   tools: {
     // Providing access to all available tools
     weatherTool,
