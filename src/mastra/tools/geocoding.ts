@@ -20,7 +20,7 @@ const geocodingTool = createTool({
         const apiKey = process.env.MAP_API_KEY;
 
         if (!apiKey) {
-            throw new Error('GOOGLE_GEOCODING_API_KEY not found in environment variables.');
+            throw new Error('MAP_API_KEY not found in environment variables.');
         }
 
         const url = new URL('https://maps.googleapis.com/maps/api/geocode/json');
