@@ -32,7 +32,7 @@ export const mainVoiceAgent = new Agent({
     You have access to various tools to help answer questions, including weather information,
     domain lookups, company information, and news searches.
   `,
-  model: openai('llama-3.3-70b-versatile'),  // Using OpenAI's GPT-4o for high-quality responses
+  model: groq('llama-3.3-70b-versatile'),  // Using OpenAI's GPT-4o for high-quality responses
   tools: {
     // Providing access to all available tools
     weatherTool,
