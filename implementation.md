@@ -19,7 +19,7 @@ DATABASE_URL=file:example.db  # For local development
 
 Create your agent configuration file:
 
-```typescript:src/mastra/agents/index.ts
+```typescript:src/mastra/agents/weatherAgent.ts
 import { Agent } from "@mastra/core";
 import { Memory } from "@mastra/memory";
 import { MastraStorageLibSql } from '@mastra/core/storage';

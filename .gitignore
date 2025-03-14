@@ -6,3 +6,4 @@ dist
 .env
 *.db
 .idea
+.DS_Store
