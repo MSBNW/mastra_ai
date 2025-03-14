@@ -1,14 +1,13 @@
 import {Mastra} from '@mastra/core/mastra';
 import {createLogger} from '@mastra/core/logger';
 import {weatherWorkflow} from './workflows';
-import {weatherAgent} from './agents/weatherAgent';
-import {whoisAgent} from "./agents/whoisAgent";
-import {reviewsAgent} from "./agents/reviewsAgent";
+import {weatherAgent, whoisAgent, reviewsAgent, mainVoiceAgent} from './agents';
 import {VercelDeployer} from '@mastra/deployer-vercel';
 
+// @ts-ignore
 export const mastra = new Mastra({
     workflows: {weatherWorkflow},
-    agents: {weatherAgent, whoisAgent, reviewsAgent},
+    agents: {weatherAgent, whoisAgent, reviewsAgent, mainVoiceAgent},
     logger: createLogger({
         name: 'Mastra',
         level: 'info',

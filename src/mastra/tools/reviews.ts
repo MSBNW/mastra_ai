@@ -1,6 +1,5 @@
 import {createTool} from '@mastra/core/tools';
 import {z} from 'zod';
-import {log} from "node:util";
 
 
 interface ReviewItem {
