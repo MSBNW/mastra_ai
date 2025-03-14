@@ -12,40 +12,36 @@ const whoisTool = createTool({
         etv: z.string().optional(),
     }),
     execute: async ({context}) => {
-        return await getWhoisInfo(context.domain);
+        const response = await fetch(
+            'https://api.dataforseo.com/v3/domain_analytics/whois/overview/live',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Basic ${process.env.DATAFORSEO_API_KEY}`
+                },
+                body: JSON.stringify([
+                    {
+                        limit: 1,
+                        filters: [
+                            ['domain', '=', context.domain]
+                        ],
+                    }
+                ]),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch dataforseo data: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        return {
+            domainName: context.domain,
+            etv: data?.tasks?.[0]?.result?.[0]?.items?.[0]?.metrics?.organic?.etv || 'Unknown',
+        };
     },
 });
 
 export default whoisTool;
-
-const getWhoisInfo = async (domain: string) => {
-    const response = await fetch(
-        'https://api.dataforseo.com/v3/domain_analytics/whois/overview/live',
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${process.env.DATAFORSEO_API_KEY}`
-            },
-            body: JSON.stringify([
-                {
-                    limit: 1,
-                    filters: [
-                        ['domain', '=', domain]
-                    ],
-                }
-            ]),
-        }
-    );
-
-    if (!response.ok) {
-        throw new Error(`Failed to fetch dataforseo data: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-
-    return {
-        domainName: domain,
-        etv: data?.tasks?.[0]?.result?.[0]?.items?.[0]?.metrics?.organic?.etv || 'Unknown',
-    };
-};

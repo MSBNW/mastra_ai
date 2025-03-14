@@ -1,4 +1,3 @@
-import { openai } from '@ai-sdk/openai';
 import { groq } from '@ai-sdk/groq';
 import { Agent } from '@mastra/core/agent';
 import { weatherTool, whoisTool } from '../tools';
