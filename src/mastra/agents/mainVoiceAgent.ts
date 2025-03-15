@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai';
+import { groq } from '@ai-sdk/groq';
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { ToneConsistencyMetric } from '@mastra/evals/nlp';
